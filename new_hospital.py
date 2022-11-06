@@ -3,6 +3,8 @@ from tkinter import *
 from tkinter import ttk
 from datetime import datetime
 from tkinter.messagebox import *
+import pickle
+import os
 
 class PatientInfo:
     def __init__(self, inputs):
@@ -283,7 +285,7 @@ class Hospital:
         #Variables
         self.bg_color = "white"
         self.box_color = "yellow"
-        self.database_file = "./patient_lists.txt"
+        self.database_file = "./patient_lists.pk"
 
         self.queue = []
 
@@ -295,17 +297,19 @@ class Hospital:
         self.load_queue_from_file()
     
     def load_queue_from_file(self):
-        # TODO: Check if file exist, if not do nothing
-        # TODO: Otherwise, read database file and create PatientInfo objects from the information in the file. 
-        # TODO: Add all the PatientInfo objects to self.queue
-        # TODO: TIPS - Make sure the orders of PatientInfo object in the queue is correct -> call self.queue.sort(reverse=True)
-        pass
+        if os.path.isfile(self.database_file) :
+            file = open(self.database_file, 'rb')
+            data = pickle.load(file)
 
+            # close the file
+            file.close()
+            for item in data:
+                self.queue.append(item)
+            self.queue.sort(reverse=True)
+        
     def save_patient_list_to_file(self):
-        # TODO: Create database file
-        # TODO: Create new file or rewrite file with PatientInfo information from self.queue
-        pass
-    
+        pickle.dump(self.queue, open(self.database_file ,'wb+'))
+        
     #----------------------------Main window-----------------------------
     def create_hospital_view(self):
         #text
