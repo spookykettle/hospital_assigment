@@ -6,6 +6,16 @@ from tkinter.messagebox import *
 import pickle
 import os
 
+"""
+Group Members
+
+64011588 Pun Rojanamontien
+64011623 Sith Rajtborirak
+64011640 Supitcha Thongkerd
+65011676 Panop Pitchayarthorn
+
+"""
+
 class PatientInfo:
     def __init__(self, inputs):
         self.name = inputs["name"]
@@ -44,7 +54,7 @@ class DoctorView:
         self.windowSize = "700x280"
         self.bg_color = "white"
         self.button_color = "white"
-        self.box_color = "yellow"
+        self.box_color = "#e8e8e8"
         self.root = root
         self.queue = queue
         self.hospital = hospital
@@ -58,7 +68,7 @@ class DoctorView:
     def create_doctor_view(self):
         for child in self.root.winfo_children():
             if child.winfo_name() == "top_lvl_doctor":
-                print("Doctor View is opened")
+                print("Doctor View is already opened")
                 return None
 
         print("Open Doctor View")
@@ -81,8 +91,8 @@ class DoctorView:
 
         self.table.column("#0", width=0,  stretch=YES)
         self.table.column("id", anchor=CENTER, width=30)
-        self.table.column("name", anchor=CENTER, width=200)
-        self.table.column("symptom", anchor=CENTER, width=100)
+        self.table.column("name", anchor=CENTER, width=150)
+        self.table.column("symptom", anchor=CENTER, width=150)
         self.table.column("emergency_case", anchor=CENTER, width=100)
         self.table.column("time", anchor=CENTER, width=200)
 
@@ -93,6 +103,8 @@ class DoctorView:
         self.table.heading("time", text="Arrival Time", anchor=CENTER)
 
         Button(newWindow, text="treatment done", fg="black", bg ="white", command=self.done).place(x=20, y=235)
+
+
 
         newWindow.title("Doctor's view")
         newWindow.geometry(self.windowSize)
@@ -134,7 +146,7 @@ class PatientView:
         self.windowSize = "970x250"
         self.bg_color = "white"
         self.button_color = "white"
-        self.box_color = "grey"
+        self.box_color = "#e8e8e8"
         self.root = root
         self.hospital = hospital
 
@@ -219,7 +231,7 @@ class PatientView:
     def create_patient_view(self):
         for child in self.root.winfo_children():
             if child.winfo_name() == "top_lvl_patient":
-                print("Patient View is opened")
+                print("Patient View is already opened")
                 return None
 
         print("Open Patient View")
@@ -261,8 +273,8 @@ class PatientView:
 
         self.table.column("#0", width=0,  stretch=YES)
         self.table.column("id", anchor=CENTER, width=30)
-        self.table.column("name", anchor=CENTER, width=200)
-        self.table.column("symptom", anchor=CENTER, width=100)
+        self.table.column("name", anchor=CENTER, width=150)
+        self.table.column("symptom", anchor=CENTER, width=150)
         self.table.column("emergency_case", anchor=CENTER, width=100)
         self.table.column("time", anchor=CENTER, width=200)
 
@@ -313,11 +325,25 @@ class Hospital:
     #----------------------------Main window-----------------------------
     def create_hospital_view(self):
         #text
-        Label(self.root, text="\nPlease Select\n", fg="black", font=40, bg=self.bg_color).pack()
+        Label(self.root, text="\nHospital Queue", fg="black", font=("Arial", 25), bg=self.bg_color).pack()
+        Label(self.root, text="Please Select\n", fg="grey", font=20, bg=self.bg_color).pack()
 
-        #button
-        Button(self.root, text="PATIENT", fg="black", bg ="black", command=self.patient_view.create_patient_view).place(x=120, y=150)
-        Button(self.root, text="DOCTOR", fg="black", bg ="black", command=self.doctor_view.create_doctor_view).place(x=300, y=150)
+        #button format
+        button_frame1 = Frame(self.root, highlightbackground="black", highlightthickness=2)
+        button_frame2 = Frame(self.root, highlightbackground="black", highlightthickness=2)
+
+        #buttons
+        bt1 = Button(button_frame1, text="PATIENT", fg="black", bd=0, pady=15, padx =20, command=self.patient_view.create_patient_view)
+        bt1.pack()
+        bt1.bind('<Enter>', lambda e: bt1.config(fg='green'))
+        bt1.bind('<Leave>', lambda e: bt1.config(fg='black'))
+        button_frame1.pack(pady=10)
+
+        bt2 = Button(button_frame2, text="DOCTOR", fg="black", bd=0, pady=15, padx =20, command=self.doctor_view.create_doctor_view)
+        bt2.pack()
+        bt2.bind('<Enter>', lambda e: bt2.config(fg='green'))
+        bt2.bind('<Leave>', lambda e: bt2.config(fg='black'))
+        button_frame2.pack(pady=10)
 
         #window
         self.root.geometry(self.windowSize)
